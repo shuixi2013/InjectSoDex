@@ -25,6 +25,13 @@
         android:text="showPluginResources"
         android:textAllCaps="false"/>
 
+    <Button
+        android:id="@+id/showPlugin2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="showPluginToast"
+        android:textAllCaps="false"/>
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal"

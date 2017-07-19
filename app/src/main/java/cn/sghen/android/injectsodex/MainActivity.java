@@ -20,7 +20,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cn.sghen.android.plugindemo.IPluginResources;
 import cn.sghen.android.toastlib.IToast;
+import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Button showPlugin;
     private ImageView imageView;
+
+    private Button showPlugin2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +113,42 @@ public class MainActivity extends AppCompatActivity {
                 imageView.setImageDrawable(drawable);
                 toast.setText(text);
                 toast.show();
+            }
+        });
+
+        showPlugin2 = (Button) findViewById(R.id.showPlugin2);
+        showPlugin2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File file = new File(Environment.getExternalStorageDirectory() + "/inject/plugindemo.apk");
+                if (!file.exists()) {
+                    toast.setText("Click the showPluginResources button to copy the plugindemo.apk");
+                    toast.show();
+                } else {
+                    File odexPath = MainActivity.this.getDir("odex", 0);
+                    if (!odexPath.exists())
+                        odexPath.mkdirs();
+                    String libDir = MainActivity.this.getApplicationInfo().nativeLibraryDir;
+
+                    DexClassLoader dexClassLoader = new DexClassLoader(file.toString(),
+                            odexPath.toString(), libDir, MainActivity.this .getClassLoader());
+                    try {
+                        Class aClass =  dexClassLoader.loadClass("cn.sghen.android.plugindemo.PluginResources");
+                        IPluginResources iPluginResources = (IPluginResources) aClass.newInstance();
+                        if (iPluginResources != null) {
+                            toast.setText(iPluginResources.getString());
+                        } else {
+                            toast.setText("IPluginResources load failed");
+                        }
+                        toast.show();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
