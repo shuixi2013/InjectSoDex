@@ -1,6 +1,7 @@
 package cn.sghen.android.injectsodex;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
 
     private Button showPlugin2;
+    private Button startPlugin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
         showToast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                File folder = new File(Environment.getExternalStorageDirectory() + "/inject/");
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
                 File file = new File(Environment.getExternalStorageDirectory() + "/inject/MyToast.jar");
                 if (!file.exists()) {
                     try {
                         InputStream inputStream = MainActivity.this.getAssets().open("MyToast.jar");
-                        file.createNewFile();
                         FileOutputStream outputStream = new FileOutputStream(file);
                         byte[] data = new byte[1024];
                         int result;
@@ -90,7 +95,12 @@ public class MainActivity extends AppCompatActivity {
         showPlugin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                File folder = new File(Environment.getExternalStorageDirectory() + "/inject/");
+                if (!folder.exists()) {
+                    folder.mkdirs();
+                }
                 File file = new File(Environment.getExternalStorageDirectory() + "/inject/plugindemo.apk");
+                file.delete();
                 if (!file.exists()) {
                     try {
                         InputStream inputStream = MainActivity.this.getAssets().open("plugindemo.apk");
@@ -131,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     String libDir = MainActivity.this.getApplicationInfo().nativeLibraryDir;
 
                     DexClassLoader dexClassLoader = new DexClassLoader(file.toString(),
-                            odexPath.toString(), libDir, MainActivity.this .getClassLoader());
+                            odexPath.getAbsolutePath(), libDir, MainActivity.this .getClassLoader());
                     try {
                         Class aClass =  dexClassLoader.loadClass("cn.sghen.android.plugindemo.PluginResources");
                         IPluginResources iPluginResources = (IPluginResources) aClass.newInstance();
@@ -148,6 +158,23 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
+                }
+            }
+        });
+
+        startPlugin = (Button) findViewById(R.id.startPlugin);
+        startPlugin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File file = new File(Environment.getExternalStorageDirectory() + "/inject/plugindemo.apk");
+                if (!file.exists()) {
+                    toast.setText("Click the showPluginResources button to copy the plugindemo.apk");
+                    toast.show();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, ProxyActivity.class);
+                    intent.putExtra("pluginPath", file.toString());
+                    //intent.putExtra("pluginClass", "cn.sghen.android.plugindemo.PluginActivity");
+                    startActivity(intent);
                 }
             }
         });

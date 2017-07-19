@@ -4,38 +4,45 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
     tools:context="cn.sghen.android.injectsodex.MainActivity">
 
     <Button
         android:id="@+id/showToast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="showToastFromJar"/>
+        android:text="showToastFromJar"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/showPlugin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="showPluginResources"
-        android:textAllCaps="false"/>
+        android:text="showPluginResources(copy)"
+        android:textAllCaps="false" />
 
     <Button
         android:id="@+id/showPlugin2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="showPluginToast"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/startPlugin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="startPluginActivity"
+        android:textAllCaps="false" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" />
 
 </LinearLayout>
