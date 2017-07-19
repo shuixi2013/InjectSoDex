@@ -2,6 +2,8 @@ package cn.sghen.android.injectsodex;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private Button showToast;
     private Toast toast;
     private IToast iToast;
+
+    private Button showPlugin;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,38 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     iToast.showToast(MainActivity.this, "Hello, I'm the toast from jar");
                 }
+            }
+        });
+
+        showPlugin = (Button) findViewById(R.id.showPlugin);
+        imageView = (ImageView) findViewById(R.id.imageView);
+
+        showPlugin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                File file = new File(Environment.getExternalStorageDirectory() + "/inject/plugindemo.apk");
+                if (!file.exists()) {
+                    try {
+                        InputStream inputStream = MainActivity.this.getAssets().open("plugindemo.apk");
+                        file.createNewFile();
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        byte[] data = new byte[1024];
+                        int result;
+                        while ((result = inputStream.read(data)) != -1) {
+                            outputStream.write(data, 0, result);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                Log.d(TAG, file.toString() + " " + file.exists());
+                Resources resources = Constant.getBundleResources(MainActivity.this, file.toString());
+                Drawable drawable = resources.getDrawable(resources.getIdentifier("beetle", "mipmap", "cn.sghen.android.plugindemo"));
+                String text = resources.getString(resources.getIdentifier("plugin_text", "string", "cn.sghen.android.plugindemo"));
+                imageView.setImageDrawable(drawable);
+                toast.setText(text);
+                toast.show();
             }
         });
 
