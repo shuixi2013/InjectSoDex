@@ -11,6 +11,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="cn.sghen.android.injectsodex.MainActivity">
 
+    <Switch
+        android:id="@+id/radioButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="hotFix(need to restart app)"
+        android:textAllCaps="false"/>
+
     <Button
         android:id="@+id/showToast"
         android:layout_width="match_parent"

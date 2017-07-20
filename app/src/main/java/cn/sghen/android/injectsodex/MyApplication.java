@@ -27,7 +27,9 @@ public class MyApplication extends Application {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         //Log.d(TAG, "attachBaseContext() hasDexClassLoader=" + hasDexClassLoader());
-        installJar();
+        if (getSharedPreferences("hotfix", MODE_PRIVATE).getBoolean("isHotFix", false)) {
+            installJar();
+        }
     }
 
     private static boolean hasDexClassLoader() {

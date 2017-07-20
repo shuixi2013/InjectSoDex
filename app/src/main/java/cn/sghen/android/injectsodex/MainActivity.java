@@ -2,6 +2,7 @@ package cn.sghen.android.injectsodex;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -13,7 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.io.File;
@@ -48,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Student student;
 
+    private Switch radioButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,19 @@ public class MainActivity extends AppCompatActivity {
 
         student = new Student(1, "Sghen", true, 24);
         Log.e(TAG, student.toString());
+        Toast.makeText(this, student.toString(), Toast.LENGTH_LONG).show();
+
+        final SharedPreferences sp = MainActivity.this.getSharedPreferences("hotfix", MODE_PRIVATE);
+        radioButton = (Switch) findViewById(R.id.radioButton);
+        radioButton.setChecked(sp.getBoolean("isHotFix", false));
+        radioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("isHotFix", isChecked);
+                editor.apply();
+            }
+        });
 
         showToast = (Button) findViewById(R.id.showToast);
         showToast.setOnClickListener(new View.OnClickListener() {
