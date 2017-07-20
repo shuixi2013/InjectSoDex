@@ -96,4 +96,11 @@ public class ProxyActivity extends Activity {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (iPlugin != null)
+            iPlugin.onPluginResume();
+    }
 }
