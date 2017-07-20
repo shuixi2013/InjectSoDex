@@ -21,10 +21,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import cn.sghen.android.hotfixlib.Student;
 import cn.sghen.android.plugindemo.IPluginResources;
 import cn.sghen.android.toastlib.IToast;
 import dalvik.system.DexClassLoader;
 import dalvik.system.PathClassLoader;
+
+/**
+ * Created by lgb on 17-7-19
+ * https://github.com/singwhatiwanna/dynamic-load-apk
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,10 +46,15 @@ public class MainActivity extends AppCompatActivity {
     private Button showPlugin2;
     private Button startPlugin;
 
+    private Student student;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        student = new Student(1, "Sghen", true, 24);
+        Log.e(TAG, student.toString());
 
         showToast = (Button) findViewById(R.id.showToast);
         showToast.setOnClickListener(new View.OnClickListener() {
